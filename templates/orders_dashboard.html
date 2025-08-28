@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders Dashboard</title>
+</head>
+<body>
+<h1>Orders</h1>
+
+<ul id="messages"></ul>
+
+<script>
+    // Django will render these values dynamically:
+    const userType = "{{ user_type }}";   // "admin", "worker", "client"
+    const token = "{{ token }}";
+    console.log(token)
+    // Dynamic WebSocket URL based on user role
+    const socketUrl = `ws://127.0.0.1:8000/ws/orders/${userType}/?token=${token}`;
+    const socket = new WebSocket(socketUrl);
+
+    socket.onmessage = function (e) {
+        const data = JSON.parse(e.data);
+
+        // Browser notification (popup alert depending on user role)
+        if (Notification.permission === "granted") {
+            new Notification(`New message for ${userType}`, {
+                body: data.message,
+            });
+        } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    new Notification(`New message for ${userType}`, {
+                        body: data.message,
+                    });
+                }
+            });
+        }
+
+        // Also show in UI
+        const li = document.createElement("li");
+        li.innerText = `[${userType}] ${data.message}`;
+        document.getElementById("messages").appendChild(li);
+    };
+</script>
+</body>
+</html>
