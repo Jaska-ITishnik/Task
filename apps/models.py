@@ -27,11 +27,17 @@ class User(AbstractUser):
     def is_admin(self):
         return self.role == User.Role.ADMIN or self.is_staff
 
+    def __str__(self):
+        return f"{self.username}"
+
 
 class Service(TimeBasedModel):
     name = CharField(max_length=200)
     description = TextField(blank=True)
     base_price = DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"Servis {self.name}"
 
 
 class Order(TimeBasedModel):
@@ -50,6 +56,9 @@ class Order(TimeBasedModel):
     price = DecimalField(max_digits=10, decimal_places=2)
     status = CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
     description = TextField(blank=True)
+
+    def __str__(self):
+        return f"Order {self.client.username}"
 
 
 class Notification(Model):
