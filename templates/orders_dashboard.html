@@ -15,7 +15,7 @@
     const token = "{{ token }}";
     console.log(token)
     // Dynamic WebSocket URL based on user role
-    const socketUrl = `ws://127.0.0.1:8000/ws/orders/${userType}/?token=${token}`;
+    const socketUrl = `ws://${window.location.host}/ws/orders/${userType}/?token=${token}`;
     const socket = new WebSocket(socketUrl);
 
     socket.onmessage = function (e) {
