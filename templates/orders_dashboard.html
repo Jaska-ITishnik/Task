@@ -10,20 +10,16 @@
 <ul id="messages"></ul>
 
 <script>
-    // Django will render these values dynamically:
-    const userType = "{{ user_type }}";   // "admin", "worker", "client"
+
+    const userType = "{{ user_type }}";
     const token = "{{ token }}";
     console.log(token)
-    // Detect protocol (ws or wss depending on http/https)
     const wsScheme = window.location.protocol === "https:" ? "wss" : "ws";
     const socketUrl = `${wsScheme}://${window.location.host}/ws/orders/${userType}/?token=${token}`;
-
     const socket = new WebSocket(socketUrl);
-
     socket.onmessage = function (e) {
         const data = JSON.parse(e.data);
 
-        // Browser notification (popup alert depending on user role)
         if (Notification.permission === "granted") {
             new Notification(`New message for ${userType}`, {
                 body: data.message,
@@ -38,7 +34,6 @@
             });
         }
 
-        // Also show in UI
         const li = document.createElement("li");
         li.innerText = `[${userType}] ${data.message}`;
         document.getElementById("messages").appendChild(li);
