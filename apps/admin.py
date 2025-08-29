@@ -17,7 +17,7 @@ class OrderModelAdmin(ModelAdmin):
 
 @admin.register(Service)
 class ServiceModelAdmin(ModelAdmin):
-    pass
+    list_display = "id", "name"
 
 
 @admin.register(Notification)

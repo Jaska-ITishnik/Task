@@ -1,6 +1,7 @@
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.contrib.auth import get_user_model
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.serializers import ModelSerializer
 
 from apps.models import Service, Order
@@ -45,3 +46,9 @@ class OrderSerializer(ModelSerializer):
     class Meta:
         model = Order
         fields = "__all__"
+
+    # def update(self, instance, validated_data):
+    #     request = self.context["request"]
+    #     if "status" in validated_data and request.user == instance.client:
+    #         raise PermissionDenied("Mijoz buyurtma holatini o'zgartiraolmaydi!")
+    #     return super().update(instance, validated_data)
