@@ -14,8 +14,10 @@
     const userType = "{{ user_type }}";   // "admin", "worker", "client"
     const token = "{{ token }}";
     console.log(token)
-    // Dynamic WebSocket URL based on user role
-    const socketUrl = `ws://${window.location.host}/ws/orders/${userType}/?token=${token}`;
+    // Detect protocol (ws or wss depending on http/https)
+    const wsScheme = window.location.protocol === "https:" ? "wss" : "ws";
+    const socketUrl = `${wsScheme}://${window.location.host}/ws/orders/${userType}/?token=${token}`;
+
     const socket = new WebSocket(socketUrl);
 
     socket.onmessage = function (e) {
