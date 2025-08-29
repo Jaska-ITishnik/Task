@@ -61,6 +61,17 @@ Payment Integration
 Simulated Payme and Click payment systems with a fully implemented transaction model.
 Status transitions (e.g., Confirmed, Canceled) dynamically update associated order statuses.
 
+CI/CD Deployment
+
+Workflow: Integrated CI/CD pipeline named "Task Project CI/CD Deployment" automates deployment on master branch pushes.
+Configuration:
+
+Runs on ubuntu-latest.
+Utilizes appleboy/ssh-action@v0.1.10 for remote SSH execution.
+Steps include navigating to /var/www/Task, pulling the latest changes with git pull, and restarting the service with systemctl restart task.service.
+Secured with environment secrets: HOST, USER, and SSH_KEY.
+Benefits: Enhances development efficiency with automated deployments, reduces manual errors, ensures rapid updates, and maintains system consistency across environments.
+
 Installation
 
 Clone the repository: git clone <repository-url>.
